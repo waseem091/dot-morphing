@@ -1,0 +1,33 @@
+{
+  "name": "dot-morphing",
+  "version": "1.0.0",
+  "description": "I have a set of carefully designed dot art which I'd like to incorporate on the landing page of my portfolio website's latest version. I am using Claude to facilitate this.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waseem091/dot-morphing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/waseem091/dot-morphing/issues"
+  },
+  "homepage": "https://github.com/waseem091/dot-morphing#readme",
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
