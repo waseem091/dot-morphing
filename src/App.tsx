@@ -1,17 +1,18 @@
 import { useRef, useEffect } from 'react'
 import { SHAPES, SEQUENCE, DOT_COUNT } from './dots'
 
-const HOLD_S = 0.6
-const MORPH_S = 1.0
-const FRAME_S = HOLD_S + MORPH_S // 1.6s total per shape
+const HOLD_S  = 0.6
+const MORPH_S = 1.2
+const FRAME_S = HOLD_S + MORPH_S
 
 const DOT_PX = 6
 const DOT_R  = 2.4
 const DW = 630
 const DH = 360
 
-function easeInOutCubic(t: number) {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+// cubic-bezier(0.76, 0, 0.24, 1) approximated via quintic ease-in-out
+function ease(t: number) {
+  return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2
 }
 
 function roundRect(
@@ -44,12 +45,17 @@ export default function App() {
     let startTime: number | null = null
 
     function setSize() {
+      const dpr = window.devicePixelRatio || 1
       const mobile = window.innerWidth <= 640
       const maxW = mobile ? 300 : DW
       const maxH = mobile ? 200 : DH
       const scale = Math.min(maxW / DW, maxH / DH, window.innerWidth / DW, window.innerHeight / DH)
-      canvas.width  = Math.round(DW * scale)
-      canvas.height = Math.round(DH * scale)
+      const cssW = Math.round(DW * scale)
+      const cssH = Math.round(DH * scale)
+      canvas.style.width  = cssW + 'px'
+      canvas.style.height = cssH + 'px'
+      canvas.width  = Math.round(cssW * dpr)
+      canvas.height = Math.round(cssH * dpr)
     }
 
     function draw(ts: number) {
@@ -67,7 +73,7 @@ export default function App() {
       const holdFrac = HOLD_S / FRAME_S
       const morphT = ft <= holdFrac
         ? 0
-        : easeInOutCubic((ft - holdFrac) / (1 - holdFrac))
+        : ease((ft - holdFrac) / (1 - holdFrac))
 
       const scale = canvas.width / DW
       const s = DOT_PX * scale
