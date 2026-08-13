@@ -44,7 +44,10 @@ export default function App() {
     let startTime: number | null = null
 
     function setSize() {
-      const scale = Math.min(window.innerWidth / DW, window.innerHeight / DH)
+      const mobile = window.innerWidth <= 640
+      const maxW = mobile ? 300 : DW
+      const maxH = mobile ? 200 : DH
+      const scale = Math.min(maxW / DW, maxH / DH, window.innerWidth / DW, window.innerHeight / DH)
       canvas.width  = Math.round(DW * scale)
       canvas.height = Math.round(DH * scale)
     }
