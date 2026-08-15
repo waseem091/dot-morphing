@@ -43,6 +43,9 @@ export default function App() {
     const ctx = canvas.getContext('2d')!
     let rafId: number
     let startTime: number | null = null
+    let lastFi = -1
+    let fromIdx = 0
+    let toIdx = 1
 
     function setSize() {
       const dpr = window.devicePixelRatio || 1
@@ -61,14 +64,17 @@ export default function App() {
     function draw(ts: number) {
       if (startTime === null) startTime = ts
       const elapsed = (ts - startTime) / 1000
-      const cycle = FRAME_S * shapes.length
-      const t = elapsed % cycle
+      const fi = Math.floor(elapsed / FRAME_S)
+      const ft = (elapsed % FRAME_S) / FRAME_S
 
-      const fi = Math.floor(t / FRAME_S)
-      const ft = (t % FRAME_S) / FRAME_S
+      if (fi !== lastFi) {
+        lastFi = fi
+        fromIdx = fi === 0 ? Math.floor(Math.random() * shapes.length) : toIdx
+        do { toIdx = Math.floor(Math.random() * shapes.length) } while (toIdx === fromIdx)
+      }
 
-      const from = shapes[fi % shapes.length]
-      const to   = shapes[(fi + 1) % shapes.length]
+      const from = shapes[fromIdx]
+      const to   = shapes[toIdx]
 
       const holdFrac = HOLD_S / FRAME_S
       const morphT = ft <= holdFrac
